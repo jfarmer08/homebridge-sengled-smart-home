@@ -1,0 +1,2 @@
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "homebridge -I -D -P . -U /Users/allenfarmer/Work/homebridge-sengled-smart-home"

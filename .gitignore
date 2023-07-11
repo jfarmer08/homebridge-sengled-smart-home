@@ -1,0 +1,9 @@
+
+node_modules/*
+.uix-secrets
+accessories/*
+persist/*
+auth.json
+config.json
+config.png
+package-lock.json
