@@ -1,58 +1,120 @@
 {
     "pluginAlias": "SengledSmartHome",
+    "pluginAlias": "SengledHub",
     "pluginType": "platform",
     "headerDisplay": "This plugin uses the existing Sengled Element Home app infrastructure to allow you to control your Sengled accessories.",
     "footerDisplay": "This plugin is still in beta. If you encounter any issues out of this product, [Issues](https://github.com/jfarmer08/homebridge-sengled-smart-home/issues) and [Pull Request](https://github.com/jfarmer08/homebridge-sengled-smart-home/pulls) are welcome.",
+    "footerDisplay": "This plugin is still in beta. If you encounter any issues out of this product, [Issues](https://github.com/sammy1881/homebridge-sengled-bulbs/issues) and [Pull Request](https://github.com/sammy1881/homebridge-sengled-bulbs/pulls) are welcome.",
     "schema": {
-        "type": "object",
-        "properties": {
-            "name": {
-                "title": "Name",
-                "type": "string",
-                "required": true,
-                "default": "Sengled",
-                "description": "The name that will appear in your homebridge log."
-            },
-            "username": {
-                "title": "Username",
-                "type": "string",
-                "placeholder": "YOUR-SENGLED-USERNAME",
-                "required": true,
-                "description": "Your username of the Sengled account you used to register the device with in the Sengled app."
-            },
-            "password": {
-                "title": "Password",
-                "type": "string",
-                "placeholder": "YOUR-SENGLED-PASSWORD",
-                "required": true,
-                "description": "Your password of the Sengled account you used to register the device with in the Sengled app."
-            },
-            "debug": {
-                "title": "debug",
-                "type": "boolean",
-                "default": false,
-                "description": "This will enable more logging information from the plugin."
-            },
-            "Info": {
-                "title": "Info",
-                "type": "boolean",
-                "default": false,
-                "description": "This will enable information from the plugin."
-            },
-            "Timeout": {
-                "title": "Timeout",
-                "type": "integer",
-                "default": 4000,
-                "minimum": 2000,
-                "maximum": 30000,
-                "description": "The timeout in milliseconds to use for calls to the Sengled Web API. High values may result in other errors."
-            },
-            "AlternateLoginApi": {
-                "title": "AlternateLoginApi",
-                "type": "boolean",
-                "default": false,
-                "description": "Uses an alternative login API if for some reason logins fail even with increased timeout."
-            }
-        }
+    "type": "object",
+    "properties": {
+    "name": {
+    "title": "Name",
+    "type": "string",
+    "required": true,
+    "default": "SengledHub",
+    "description": "The name that will appear in your homebridge log."
+    },
+    "username": {
+    "title": "Username",
+    "type": "string",
+    "placeholder": "YOUR-SENGLED-USERNAME",
+    "required": true,
+    "description": "Your username of the Sengled account you used to register the device with in the Sengled app."
+    },
+    "password": {
+    "title": "Password",
+    "type": "string",
+    "placeholder": "YOUR-SENGLED-PASSWORD",
+    "required": true,
+    "description": "Your password of the Sengled account you used to register the device with in the Sengled app."
+    },
+    "debug": {
+    "title": "debug",
+    "type": "boolean",
+    "default": false,
+    "description": "This will enable more logging information from the plugin."
+    },
+    "Info": {
+    "title": "Info",
+    "type": "boolean",
+    "default": false,
+    "description": "This will enable information from the plugin."
+    },
+    "Timeout": {
+    "title": "Timeout",
+    "type": "integer",
+    "default": 4000,
+    "minimum": 2000,
+    "maximum": 30000,
+    "description": "The timeout in milliseconds to use for calls to the Sengled Web API. High values may result in other errors."
+    },
+    "AlternateLoginApi": {
+    "title": "AlternateLoginApi",
+    "type": "boolean",
+    "default": false,
+    "description": "Uses an alternative login API if for some reason logins fail even with increased timeout."
+    },
+    "EnableAdaptiveLighting": {
+    "title": "EnableAdaptiveLighting",
+    "type": "boolean",
+    "default": false,
+    "description": "Experimental.  Enables adaptive lighting for each light that supports brightness and color temperature."
+    },
+    "CustomTemperatureAdjustment": {
+    "title": "TemperatureAdjustment (Mireds)",
+    "type": "integer",
+    "condition": {
+    "functionBody": "return model.EnableAdaptiveLighting === true;"
+    },
+    "default": 0,
+    "minimum": -50,
+    "maximum": 100,
+    "description": "Offsets the color temperature used by adaptive lighting by a fixed amount.  Adjust the value larger for warmer light."
     }
-}
+    }
+    },
+    "layout": [
+    "name",
+    {
+    "key": "Credentials",
+    "title": "Sengled Credentials",
+    "type": "section",
+    "items": [
+    "username",
+    "password"
+    ]
+    },
+    {
+    "key": "Logging",
+    "title": "Logging Settings",
+    "type": "section",
+    "items": [
+    "debug",
+    "Info"
+    ]
+    },
+    {
+    "key": "Advanced",
+    "title": "Advanced Features",
+    "type": "section",
+    "expandable": true,
+    "expanded": false,
+    "items": [
+    "Timeout",
+    "AlternateLoginApi"
+    ]
+    },
+    {
+    "key": "Experimental",
+    "title": "Experimental features",
+    "type": "section",
+    "expandable": true,
+    "expanded": false,
+    "items": [
+    "EnableAdaptiveLighting",
+    "CustomTemperatureAdjustment"
+    ]
+    }
+    ]
+    }

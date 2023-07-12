@@ -1,2 +1,44 @@
+{
+  "name": "homebridge-sengled-smart-home",
+  "version": "0.0.2",
+  "description": "Sengled Smart Home plugin for Homebridge",
+  "main": "src/index.js",
+  "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "homebridge -I -D -P . -U /Users/allenfarmer/Work/homebridge-sengled-smart-home"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jfarmer08/homebridge-sengled-smart-home.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jfarmer08/homebridge-sengled-smart-home/issues"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.19.0",
+    "homebridge": ">=0.2.0"
+  },
+  "dependencies": {
+    "axios": "^0.21.4",
+    "axios-cookiejar-support": "^1.0.1",
+    "moment": "^2.29.1",
+    "tough-cookie": "^4.0.0"
+  },
+  "keywords": [
+    "siri",
+    "sengled",
+    "homebridge",
+    "homebridge-plugin",
+    "ios",
+    "homekit"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/jfarmer08/homebridge-sengled-smart-home#readme",
+  "funding": [
+    {
+      "type": "paypal",
+      "url": "https://paypal.me/AllenFarmer"
+    }
+  ]
+}
