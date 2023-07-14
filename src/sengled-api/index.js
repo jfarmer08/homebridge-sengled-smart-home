@@ -127,8 +127,8 @@ class ElementHomeClient {
 
 	login() {
 		let me = this;
-		if (me.debug) me.log("login invoked " + this.username);
-		if (me.debug) me.log("login sessionid " + this.jsessionid);
+		if (this.debug) this.log("login invoked " + this.username);
+		if (this.debug) this.log("login sessionid " + this.jsessionid);
 		// If token has been set in last 24 hours, don't log in again
 		// if (this.lastLogin.isAfter(moment().subtract(24, 'hours'))) {
 		//		 return Promise.resolve();
@@ -138,13 +138,13 @@ class ElementHomeClient {
 		return new Promise((fulfill, reject) => {
 
 			if (this.jsessionid != null) {
-				if (me.debug) me.log("Cookie found, skipping login request.");
-				if (me.debug) me.log("login via cookie");
+				if (this.debug) this.log("Cookie found, skipping login request.");
+				if (this.debug) this.log("login via cookie");
 				fulfill(this.loginResponse);
 				return;
 			}
 
-			if (me.debug) me.log("login via api. useAlternateLoginApi: %s", this.useAlternateLoginApi);
+			if (this.debug) this.log("login via api. useAlternateLoginApi: %s", this.useAlternateLoginApi);
 
 			if (!this.useAlternateLoginApi) {
 
@@ -162,7 +162,7 @@ class ElementHomeClient {
 					this.jsessionid = response.data.jsessionid;
 					this.lastLogin = moment();
 					this.loginResponse = response;
-					if (me.debug) me.log("logged in to Sengled");
+					if (this.debug) this.log("logged in to Sengled");
 					fulfill(response);
 				}).catch(function (error) {
 					reject(error);
@@ -192,7 +192,7 @@ class ElementHomeClient {
 					this.jsessionid = response.data.jsessionId;
 					this.lastLogin = moment();
 					this.loginResponse = response;
-					if (me.debug) me.log("logged in to Sengled");
+					if (this.debug) this.log("logged in to Sengled");
 					fulfill(response);
 				}).catch(function (error) {
 					reject(error);
@@ -204,13 +204,13 @@ class ElementHomeClient {
 	getDevices() {
 
 		let me = this;
-		if (me.debug) me.log("getDevices invoked ");
+		if (this.debug) this.log("getDevices invoked ");
 
-		if (me.debug) me.log(me.cache);
-		if (me.debug) me.log(moment() - me.lastCache);
-		if (moment() - me.lastCache <= 2000){
-			if (me.debug) me.log("######getDevices from cache ");
-			return me.cache;
+		if (this.debug) this.log(this.cache);
+		if (this.debug) this.log(moment() - this.lastCache);
+		if (moment() - this.lastCache <= 2000){
+			if (this.debug) this.log("######getDevices from cache ");
+			return this.cache;
 		}
 
 		return new Promise((fulfill, reject) => {
@@ -292,8 +292,8 @@ class ElementHomeClient {
 				});
 
 				// Cache the devices and set the last time the cache was updated.
-				me.cache = devices;
-				me.lastCache = moment();
+				this.cache = devices;
+				this.lastCache = moment();
 
 				fulfill(devices);
 			}).catch(function(error) {
@@ -304,7 +304,7 @@ class ElementHomeClient {
 
 	userInfo() {
 		let me = this;
-		if (me.debug) me.log("userInfo invoked ");
+		if (this.debug) this.log("userInfo invoked ");
 		return new Promise((fulfill, reject) => {
 			this.client.post('https://us-elements.cloud.sengled.com/zigbee/customer/getUserInfo.json', {})
 			.then((response) => {
@@ -318,7 +318,7 @@ class ElementHomeClient {
 
 	deviceSetOnOff(deviceId, onoff) {
 		let me = this;
-		if (me.debug) me.log('onOff ' + deviceId + ' ' + onoff);
+		if (this.debug) this.log('onOff ' + deviceId + ' ' + onoff);
 		return new Promise((fulfill, reject) => {
 			this.client.post('https://us-elements.cloud.sengled.com/zigbee/device/deviceSetOnOff.json', {"onoff": onoff ? 1 : 0,"deviceUuid": deviceId})
 			.then((response) => {
