@@ -1,0 +1,4 @@
+[submodule "src/sengled-api"]
+	path = src/sengled-api
+	url = https://github.com/jfarmer08/sengled-api
+	branch = main

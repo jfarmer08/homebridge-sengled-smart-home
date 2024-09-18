@@ -2,11 +2,13 @@
   "name": "homebridge-sengled-smart-home",
   "version": "0.0.2",
   "description": "Sengled Smart Home plugin for Homebridge",
+  "license": "MIT",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "homebridge -I -D -P . -U /Users/allenfarmer/Work/homebridge-sengled-smart-home"
   },
+  "homepage": "https://github.com/jfarmer08/homebridge-sengled-smart-home#readme",
   "repository": {
     "type": "git",
     "url": "git://github.com/jfarmer08/homebridge-sengled-smart-home.git"
@@ -33,12 +35,18 @@
     "ios",
     "homekit"
   ],
-  "license": "MIT",
-  "homepage": "https://github.com/jfarmer08/homebridge-sengled-smart-home#readme",
   "funding": [
     {
       "type": "paypal",
       "url": "https://paypal.me/AllenFarmer"
+    },
+    {
+      "type": "venmo",
+      "url": "https://venmo.com/u/Allen-Farmer"
+    },
+    {
+      "type": "cashApp",
+      "url": "https://cash.app/$Jfamer08"
     }
   ]
 }
