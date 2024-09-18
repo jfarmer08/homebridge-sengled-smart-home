@@ -34,7 +34,7 @@ Configuration sample:
 "platforms": [
   {
     "platform": "Sengled",
-    "name": "Sengled",
+    "name": "SengledSmartHome",
     "username": "***",
     "password": "***"
   }
