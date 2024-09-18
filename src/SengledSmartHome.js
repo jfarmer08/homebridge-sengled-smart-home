@@ -1,8 +1,10 @@
 const { homebridge, Accessory, UUIDGen } = require('./types')
+const { LightModels, LightMeshModels } = require('./enums')
 
-const SengledAPI = require('sengled-api') // Uncomment for Release
-//const SengledAPI = require('./sengled-api/src') // Comment for Release
+//const SengledAPI = require('sengled-api') // Uncomment for Release
+const SengledAPI = require('./sengled-api/src') // Comment for Release
 const Light = require('./accessories/Light')
+const LightMesh = require('./accessories/LightMesh')
 
 const PLUGIN_NAME = 'homebridge-sengled-smart-home'
 const PLATFORM_NAME = 'SengledSmartHome'
@@ -64,26 +66,25 @@ module.exports = class SengledSmartHome {
   }
 
   async refreshDevices() {
-    if (this.config.pluginLoggingEnabled) this.log('Refreshing devices...')
+    this.log.info('Refreshing devices...')
 
     try {
-      const objectList = await this.client.getObjectList()
-      const timestamp = objectList.ts
-      const devices = objectList.data.device_list
+      const objectList = await this.client.getDeviceList()
+      const devices = objectList
 
-      if (this.config.pluginLoggingEnabled) this.log(`Found ${devices.length} device(s)`)
-      await this.loadDevices(devices, timestamp)
+      this.log.info(`Found ${devices.length} device(s)`)
+      await this.loadDevices(devices)
     } catch (e) {
       this.log.error(`Error getting devices: ${e}`)
       throw e
     }
   }
 
-  async loadDevices(devices, timestamp) {
+  async loadDevices(devices) {
     const foundAccessories = []
 
     for (const device of devices) {
-      const accessory = await this.loadDevice(device, timestamp)
+      const accessory = await this.loadDevice(device)
       if (accessory) {
         foundAccessories.push(accessory)
       }
@@ -91,7 +92,7 @@ module.exports = class SengledSmartHome {
 
     const removedAccessories = this.accessories.filter(a => !foundAccessories.includes(a))
     if (removedAccessories.length > 0) {
-      if (this.config.pluginLoggingEnabled) this.log(`Removing ${removedAccessories.length} device(s)`)
+      this.log(`Removing ${removedAccessories.length} device(s)`)
       const removedHomeKitAccessories = removedAccessories.map(a => a.homeKitAccessory)
       this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, removedHomeKitAccessories)
     }
@@ -100,20 +101,11 @@ module.exports = class SengledSmartHome {
   }
 
   async loadDevice(device, timestamp) {
-    const accessoryClass = this.getAccessoryClass(device.product_type, device.product_model, device.mac, device.nickname)
+    const accessoryClass = this.getAccessoryClass(device.attributes.typeCode)
     if (!accessoryClass) {
-      if (this.config.pluginLoggingEnabled) this.log(`[${device.product_type}] Unsupported device type: (Name: ${device.nickname}) (MAC: ${device.mac}) (Model: ${device.product_model})`)
+      this.log.info(`[${device.attributes.productCode}] Unsupported device type: (Name: ${device.attributes.name}) (MAC: ${device.deviceUuid}) (Model: ${device.attributes.productCode})`)
       return
     }
-    else if (this.config.filterByMacAddressList?.find(d => d === device.mac) || this.config.filterDeviceTypeList?.find(d => d === device.product_type)) {
-      if (this.config.pluginLoggingEnabled) this.log(`[${device.product_type}] Ignoring (${device.nickname}) (MAC: ${device.mac}) because it is in the Ignore Device list`)
-      return
-    }
-    else if (device.product_type == 'S1Gateway' && this.config.hms == false) {
-      if (this.config.pluginLoggingEnabled) this.log(`[${device.product_type}] Ignoring (${device.nickname}) (MAC: ${device.mac}) because it is not enabled`)
-      return
-    }
-
 
     let accessory = this.accessories.find(a => a.matches(device))
     if (!accessory) {
@@ -121,32 +113,32 @@ module.exports = class SengledSmartHome {
       accessory = new accessoryClass(this, homeKitAccessory)
       this.accessories.push(accessory)
     } else {
-      if (this.config.pluginLoggingEnabled) this.log(`[${device.product_type}] Loading accessory from cache ${device.nickname} (MAC: ${device.mac})`)
+      this.log.info(`[${device.attributes.productCode}] Loading accessory from cache ${device.attributes.name} (MAC: ${device.deviceUuid})`)
     }
     accessory.update(device, timestamp)
 
     return accessory
   }
 
-  getAccessoryClass(type, model) {
-    switch (type) {
-      case 'Plug':
-        if (Object.values(PlugModels).includes(model)) { return Plug }
-      case 'Light':
-        if (Object.values(LightModels).includes(model)) { return Light }
+  getAccessoryClass(type) {
+    switch (true) {
+      case Object.values(LightModels).includes(type):
+        return Light
+      case Object.values(LightMeshModels).includes(type):
+        return LightMesh
     }
   }
 
   createHomeKitAccessory(device) {
-    const uuid = UUIDGen.generate(device.mac)
+    const uuid = UUIDGen.generate(device.deviceUuid)
 
-    const homeKitAccessory = new Accessory(device.nickname, uuid)
+    const homeKitAccessory = new Accessory(device.attributes.name, uuid)
 
     homeKitAccessory.context = {
-      mac: device.mac,
-      product_type: device.product_type,
-      product_model: device.product_model,
-      nickname: device.nickname
+      mac: device.deviceUuid,
+      product_type: device.attributes.typeCode,
+      product_model: device.attributes.productCode,
+      nickname: device.attributes.name
     }
 
     this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [homeKitAccessory])

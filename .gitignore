@@ -7,3 +7,5 @@ auth.json
 config.json
 config.png
 package-lock.json
+/backups
+.uix-dashboard.json
