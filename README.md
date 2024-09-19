@@ -1,8 +1,11 @@
-# homebridge-sengled-smart-home
-
+# This plugin adds support for Sengled Smart Home devices to [Homebridge](https://github.com/homebridge/homebridge).
 [![npm](https://img.shields.io/npm/dt/homebridge-sengled-smart-home)](https://www.npmjs.com/package/homebridge-sengled-smart-home)
 [![npm](https://img.shields.io/npm/v/homebridge-sengled-smart-home.svg?style=flat-square)](https://www.npmjs.com/package/homebridge-sengled-smart-home)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg?style=flat-square&maxAge=2592000)](https://www.paypal.com/paypalme/AllenFarmer)
+
+# Funding   [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg?style=flat-square&maxAge=2592000)](https://www.paypal.com/paypalme/AllenFarmer) [![Donate](https://img.shields.io/badge/Donate-Venmo-blue.svg?style=flat-square&maxAge=2592000)](https://venmo.com/u/Allen-Farmer) [![Donate](https://img.shields.io/badge/Donate-Cash_App-blue.svg?style=flat-square&maxAge=2592000)](https://cash.app/$Jfamer08)
+If you like what I have done here and want to help I would recommend that you firstly look into supporting Homebridge. None of this could happen without them.
+
+After you have done that if you feel like my work has been valuable to you I welcome your support through Paypal, Venmo or Cash App.
 
 [![homebridge-sengled-smart-home: Sengled Connected Home plugin for Homebridge](https://github.com/jfarmer08/homebridge-sengled-smart-home/blob/main/logo.png?raw=true)](https://github.com/jfarmer08/homebridge-sengled-smart-home)
 
