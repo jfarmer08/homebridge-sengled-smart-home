@@ -33,9 +33,46 @@ module.exports = class LightMesh extends Accessory {
       this.getCharacteristic(Characteristic.On).updateValue(noResponse);
     } else {
       this.getCharacteristic(Characteristic.On).updateValue(device.attributes.onoff);
-      this.getCharacteristic(Characteristic.Brightness).updateValue(this.plugin.client.calculateBrightnessPercentage(device.attributes.brightness));
+
+      this.plugin.client.subscribeMqtt(`wifielement/${device.deviceUuid}/status`, this.updateStatus.bind(this));
     }
   }
+
+  updateStatus(message) {
+    let data;
+
+    try {
+      data = JSON.parse(message);
+      this.plugin.log.debug(`Update Status from MQTT ${JSON.stringify(data)}`);
+    } catch (error) {
+      this.plugin.log.error('Failed to parse MQTT message:', error);
+      return;
+    }
+
+    for (const status of data) {
+      if (!status.type || !status.dn) {
+        continue;
+      }
+
+      if (status.dn === this.device_mac) {
+        if (status.type === "color") {
+          this.color = status.value;
+        }
+        if (status.type === "colorMode") {
+          this.color_mode = status.value;
+        }
+        if (status.type === "brightness") {
+          this.brightness = status.value;
+          this.updateBrightness(this.brightness)
+        }
+        if (status.type === "colorTemperature") {
+          this.color_temperature = status.value;
+          this.updateColorTemp(this.color_temperature)
+        }
+      }
+    }
+  }
+
 
   updateBrightness(value) {
     this.plugin.log(`[MeshLight] Updating brightness record for "${this.display_name} (${this.mac}) to ${value}: ${JSON.stringify(value)}"`);
@@ -88,7 +125,8 @@ module.exports = class LightMesh extends Accessory {
     try {
       await this.plugin.client.setPower(
         this.mac,
-        value ? "1" : "0"
+        value ? "1" : "0",
+        true
       );
       callback();
     } catch (e) {
@@ -101,7 +139,8 @@ module.exports = class LightMesh extends Accessory {
     try {
       await this.plugin.client.setBrightness(
         this.mac,
-        value
+        value,
+        true
       );
       callback();
     } catch (e) {

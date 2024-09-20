@@ -1,15 +1,16 @@
 const { homebridge, Accessory, UUIDGen } = require('./types')
-const { LightModels, LightMeshModels } = require('./enums')
+const { LightModels, LightMeshModels, LightWifiModels } = require('./enums')
 
 //const SengledAPI = require('sengled-api') // Uncomment for Release
 const SengledAPI = require('./sengled-api/src') // Comment for Release
 const Light = require('./accessories/Light')
 const LightMesh = require('./accessories/LightMesh')
+const LightWifi = require('./accessories/LightWifi')
 
 const PLUGIN_NAME = 'homebridge-sengled-smart-home'
 const PLATFORM_NAME = 'SengledSmartHome'
 
-const DEFAULT_REFRESH_INTERVAL = 30000
+const DEFAULT_REFRESH_INTERVAL = 60000
 
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -56,6 +57,10 @@ module.exports = class SengledSmartHome {
   async runLoop() {
     const interval = this.config.refreshInterval || DEFAULT_REFRESH_INTERVAL
     // eslint-disable-next-line no-constant-condition
+
+    await this.client.getServerInfo()
+    await this.client.initializeMqtt()
+
     while (true) {
       try {
         await this.refreshDevices()
@@ -69,7 +74,7 @@ module.exports = class SengledSmartHome {
     this.log.info('Refreshing devices...')
 
     try {
-      const objectList = await this.client.getDeviceList()
+      const objectList = await this.client.getAllDeviceList()
       const devices = objectList
 
       this.log.info(`Found ${devices.length} device(s)`)
@@ -100,7 +105,7 @@ module.exports = class SengledSmartHome {
     this.accessories = foundAccessories
   }
 
-  async loadDevice(device, timestamp) {
+  async loadDevice(device) {
     const accessoryClass = this.getAccessoryClass(device.attributes.typeCode)
     if (!accessoryClass) {
       this.log.info(`[${device.attributes.productCode}] Unsupported device type: (Name: ${device.attributes.name}) (MAC: ${device.deviceUuid}) (Model: ${device.attributes.productCode})`)
@@ -115,17 +120,19 @@ module.exports = class SengledSmartHome {
     } else {
       this.log.info(`[${device.attributes.productCode}] Loading accessory from cache ${device.attributes.name} (MAC: ${device.deviceUuid})`)
     }
-    accessory.update(device, timestamp)
+    accessory.update(device)
 
     return accessory
   }
 
-  getAccessoryClass(type) {
+  getAccessoryClass(typeCode) {
     switch (true) {
-      case Object.values(LightModels).includes(type):
+      case Object.values(LightModels).includes(typeCode):
         return Light
-      case Object.values(LightMeshModels).includes(type):
+      case Object.values(LightMeshModels).includes(typeCode):
         return LightMesh
+      case Object.values(LightWifiModels).includes(typeCode):
+        return LightWifi
     }
   }
 

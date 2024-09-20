@@ -8,3 +8,6 @@ exports.LightModels = LightModels
 
 const LightMeshModels = { 'E11-N1EA': 'E11-N1EA'}
 exports.LightMeshModels = LightMeshModels
+
+const LightWifiModels = { wificolora19: 'wificolora19'}
+exports.LightWifiModels = LightWifiModels
