@@ -1,6 +1,6 @@
 {
   "name": "homebridge-sengled-smart-home",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Sengled Smart Home plugin for Homebridge",
   "license": "MIT",
   "main": "src/index.js",
@@ -21,6 +21,7 @@
     "axios-cookiejar-support": "^1.0.1",
     "fetch": "1.1.0",
     "fs": "0.0.1-security",
+    "homebridge": "^2.0.0-beta.0",
     "https": "1.0.0",
     "moment": "^2.29.1",
     "mqtt": "5.10.1",
@@ -28,15 +29,15 @@
     "path": "0.12.7",
     "tough-cookie": "^4.0.0",
     "uuid": "10.0.0",
-    "uuid-by-string": "4.0.0",
-    "homebridge": "^2.0.0-beta.0"
+    "uuid-by-string": "4.0.0"
   },
   "engines": {
     "homebridge": "^1.6.0 || ^2.0.0-beta.0",
     "node": "^18.20.4 || ^20.15.1"
   },
   "dependencies": {
-    "axios": "^0.21.4"
+    "axios": "^0.21.4",
+    "sengled-api": "^1.0.2"
   },
   "keywords": [
     "siri",
