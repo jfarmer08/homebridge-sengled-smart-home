@@ -1,64 +1,80 @@
 {
-    "pluginAlias": "SengledSmartHome",
-    "pluginType": "platform",
-    "singular": true,
-    "headerDisplay": "Sengled plug-in for Homebridge. This is a custom component to allow control of various Sengled devices using the unofficial API. Please note this mimics the Wyze app and therefore access may be cut off at anytime. If you feel like my work has been valuable to you I welcome your support through Paypal. All funding goes back into product purchases. [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg?style=flat-square&maxAge=2592000)](https://www.paypal.com/paypalme/AllenFarmer)",
-    "footerDisplay": "For documentation please see GitHub repository",
-    "schema": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "title": "Plugin Name",
-          "description": "This name will appear in your Homebridge log",
-          "type": "string",
-          "default": "Sengled",
-          "required": true
-        },
-        "username": {
-          "title": "Username (E-Mail Address)",
-          "description": "The e-mail address used for your Sengled account",
-          "type": "string",
-          "default": "",
-          "required": true
-        },
-        "password": {
-          "title": "Password",
-          "description": "The password used for your Sengled account",
-          "type": "string",
-          "default": "",
-          "required": true
-        },
-          "countryCode": {
-          "title": "Country",
-          "type": "string",
-          "default": "us",
-          "description": "Modify the config directly to add a custom Country. Example us, au, it, eu",
-          "oneOf": [
-            { "title": "USA", "enum": ["us"] },
-            { "title": "Australia", "enum": ["au"] },
-            { "title": "European ", "enum": ["eu"] },
-            { "title": "Italy", "enum": ["it"] }
-          ],
-          "required": true
-        },
-        "refreshInterval": {
-          "title": "Refresh Interval",
-          "description": "Specify the number of milliseconds to wait between updates, default is 60000 ms (60 seconds)",
-          "type": "integer",
-          "default": 30000,
-          "minimum": 30000,
-          "maximum": 180000,
-          "multipleOf": 10000,
-          "required": false
-        },
-        "wifi": {
-          "title": "Wifi Bulbs",
-          "description": "Enable if using Wifi Bulbs, default false",
-          "type": "boolean",
-          "default": false
-        }
+  "pluginAlias": "SengledSmartHome",
+  "pluginType": "platform",
+  "singular": true,
+  "headerDisplay": "Sengled plug-in for Homebridge. This is a custom component to allow control of various Sengled devices using the unofficial API. Please note this mimics the Wyze app and therefore access may be cut off at anytime. If you feel like my work has been valuable to you I welcome your support through Paypal. All funding goes back into product purchases. [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg?style=flat-square&maxAge=2592000)](https://www.paypal.com/paypalme/AllenFarmer)",
+  "footerDisplay": "For documentation please see GitHub repository",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Plugin Name",
+        "description": "This name will appear in your Homebridge log",
+        "type": "string",
+        "default": "Sengled",
+        "required": true
+      },
+      "username": {
+        "title": "Username (E-Mail Address)",
+        "description": "The e-mail address used for your Sengled account",
+        "type": "string",
+        "default": "",
+        "required": true
+      },
+      "password": {
+        "title": "Password",
+        "description": "The password used for your Sengled account",
+        "type": "string",
+        "default": "",
+        "required": true
+      },
+        "countryCode": {
+        "title": "Country",
+        "type": "string",
+        "default": "us",
+        "description": "Modify the config directly to add a custom Country. Example us, au, it, eu",
+        "oneOf": [
+          { "title": "USA", "enum": ["us"] },
+          { "title": "Australia", "enum": ["au"] },
+          { "title": "European ", "enum": ["eu"] },
+          { "title": "Italy", "enum": ["it"] }
+        ],
+        "required": true
+      },
+      "refreshInterval": {
+        "title": "Refresh Interval",
+        "description": "Specify the number of milliseconds to wait between updates, default is 60000 ms (60 seconds)",
+        "type": "integer",
+        "default": 30000,
+        "minimum": 30000,
+        "maximum": 180000,
+        "multipleOf": 10000,
+        "required": false
+      },
+      "wifi": {
+        "title": "Wifi Bulbs",
+        "description": "Enable if using Wifi Bulbs, default false",
+        "type": "boolean",
+        "default": false
+      },
+      "logLevel": {
+        "title": "Log Level",
+        "type": "string",
+        "default": "Error",
+        "description": "Choose a logging level from the list",
+        "oneOf": [
+          { "title": "Fatal", "enum": ["fatal"] },
+          { "title": "Error", "enum": ["error"] },
+          { "title": "Warning ", "enum": ["warn"] },
+          { "title": "Information", "enum": ["info"] },
+          { "title": "Success", "enum": ["success"] },
+          { "title": "Debug", "enum": ["debug"] },
+          { "title": "Trace", "enum": ["trace"] }
+        ],
+        "required": false
       }
-    },
-    "form": null,
-    "display": null
-  }
+    }
+  },
+  "form": null,
+  "display": null
+}

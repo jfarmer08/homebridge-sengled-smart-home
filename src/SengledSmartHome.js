@@ -47,7 +47,7 @@ module.exports = class SengledSmartHome {
       authBaseUrl: this.config.authBaseUrl,
       apiBaseUrl: this.config.apiBaseUrl,
 
-    }, this.log)
+    }, this.log, this.config.logLevel || 'info')
   }
 
   didFinishLaunching() {
