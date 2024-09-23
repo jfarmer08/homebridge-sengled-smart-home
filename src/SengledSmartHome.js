@@ -58,8 +58,11 @@ module.exports = class SengledSmartHome {
     const interval = this.config.refreshInterval || DEFAULT_REFRESH_INTERVAL
     // eslint-disable-next-line no-constant-condition
 
-    await this.client.getServerInfo()
-    await this.client.initializeMqtt()
+    if(this.config.wifi){
+      await this.client.getServerInfo()
+      await this.client.initializeMqtt()
+    }
+
 
     while (true) {
       try {
